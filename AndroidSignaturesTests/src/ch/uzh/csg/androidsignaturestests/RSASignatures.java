@@ -172,7 +172,7 @@ public class RSASignatures {
 		rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
 		rsa.sign();
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static long SHA1withRSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
@@ -193,7 +193,7 @@ public class RSASignatures {
 			System.exit(0);
 		}
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static void measureSHA256withRSA1024sign() {
@@ -288,7 +288,7 @@ public class RSASignatures {
 		rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
 		rsa.sign();
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static long SHA256withRSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
@@ -309,7 +309,7 @@ public class RSASignatures {
 			System.exit(0);
 		}
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static KeyPair generateNewKey(int keySize) {

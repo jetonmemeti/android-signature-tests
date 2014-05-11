@@ -62,7 +62,7 @@ public class CreateKeysTest {
 		KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 		keyGen.initialize(keySize);
 		keyGen.generateKeyPair();
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static void measureCreate2048Keys() {
@@ -115,7 +115,7 @@ public class CreateKeysTest {
         g.initialize(ecSpec, new SecureRandom());
         g.generateKeyPair();
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static void measureCreate224ECCKeys() {

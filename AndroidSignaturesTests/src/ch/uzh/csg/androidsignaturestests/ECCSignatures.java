@@ -176,7 +176,7 @@ public class ECCSignatures {
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         ecdsaSign.sign();
         
-        return (start - System.currentTimeMillis());
+        return (System.currentTimeMillis() - start);
 	}
 	
 	private static long SHA1withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
@@ -197,7 +197,7 @@ public class ECCSignatures {
 			System.exit(0);
         }
         
-        return (start - System.currentTimeMillis());
+        return (System.currentTimeMillis() - start);
 	}
 	
 	private static void measureSHA256withECDSA160sign() {
@@ -292,7 +292,7 @@ public class ECCSignatures {
 		ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
 		ecdsaSign.sign();
 		
-		return (start - System.currentTimeMillis());
+		return (System.currentTimeMillis() - start);
 	}
 	
 	private static long SHA256withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
@@ -313,7 +313,7 @@ public class ECCSignatures {
 			System.exit(0);
         }
         
-        return (start - System.currentTimeMillis());
+        return (System.currentTimeMillis() - start);
 	}
 	
 	private static KeyPair generateNewKey(String spec) {
