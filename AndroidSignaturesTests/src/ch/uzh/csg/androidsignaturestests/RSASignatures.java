@@ -179,14 +179,14 @@ public class RSASignatures {
 		Signature rsa = Signature.getInstance("SHA1withRSA");
 		rsa.initSign(privateKey);
 		rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
-		byte[] sign = rsa.sign();
+		byte[] signature = rsa.sign();
 		
 		long start = System.currentTimeMillis();
 		
 		Signature rsa2 = Signature.getInstance("SHA1withRSA");
 		rsa2.initVerify(publicKey);
 		rsa2.update(PLAIN_TEXT.getBytes("UTF-8"));
-		boolean verify = rsa2.verify(sign);
+		boolean verify = rsa2.verify(signature);
 		
 		if (!verify) {
 			Log.e(TAG, "signature not ok!");
@@ -295,14 +295,14 @@ public class RSASignatures {
 		Signature rsa = Signature.getInstance("SHA256withRSA");
 		rsa.initSign(privateKey);
 		rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
-		byte[] sign = rsa.sign();
+		byte[] signature = rsa.sign();
 		
 		long start = System.currentTimeMillis();
 		
 		Signature rsa2 = Signature.getInstance("SHA256withRSA");
 		rsa2.initVerify(publicKey);
 		rsa2.update(PLAIN_TEXT.getBytes("UTF-8"));
-		boolean verify = rsa2.verify(sign);
+		boolean verify = rsa2.verify(signature);
 		
 		if (!verify) {
 			Log.e(TAG, "signature not ok!");
