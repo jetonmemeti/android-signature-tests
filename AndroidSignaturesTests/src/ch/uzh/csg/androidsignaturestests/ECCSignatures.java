@@ -12,8 +12,8 @@ import java.security.SecureRandom;
 import java.security.Signature;
 import java.security.SignatureException;
 
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.spongycastle.jce.ECNamedCurveTable;
+import org.spongycastle.jce.spec.ECParameterSpec;
 
 import android.util.Log;
 
@@ -171,7 +171,7 @@ public class ECCSignatures {
 	private static long SHA1withECDSAsign(PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "BC");
+		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         ecdsaSign.sign();
@@ -180,14 +180,14 @@ public class ECCSignatures {
 	}
 	
 	private static long SHA1withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
-		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "BC");
+		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         byte[] signature = ecdsaSign.sign();
 		
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign2 = Signature.getInstance("SHA1withECDSA", "BC");
+		Signature ecdsaSign2 = Signature.getInstance("SHA1withECDSA", "SC");
 		ecdsaSign2.initVerify(publicKey);
         ecdsaSign2.update(PLAIN_TEXT.getBytes("UTF-8"));
         boolean verify = ecdsaSign2.verify(signature);
@@ -287,7 +287,7 @@ public class ECCSignatures {
 	private static long SHA256withECDSAsign(PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "BC");
+		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "SC");
 		ecdsaSign.initSign(privateKey);
 		ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
 		ecdsaSign.sign();
@@ -296,14 +296,14 @@ public class ECCSignatures {
 	}
 	
 	private static long SHA256withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
-		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "BC");
+		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "SC");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         byte[] signature = ecdsaSign.sign();
 		
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign2 = Signature.getInstance("SHA256withECDSA", "BC");
+		Signature ecdsaSign2 = Signature.getInstance("SHA256withECDSA", "SC");
 		ecdsaSign2.initVerify(publicKey);
         ecdsaSign2.update(PLAIN_TEXT.getBytes("UTF-8"));
         boolean verify = ecdsaSign2.verify(signature);
@@ -319,7 +319,7 @@ public class ECCSignatures {
 	private static KeyPair generateNewKey(String spec) {
 		try {
 			ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(spec);
-			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
+			KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "SC");
 			keyGen.initialize(ecSpec, new SecureRandom());
 			return keyGen.generateKeyPair();
 		} catch (Exception e) {

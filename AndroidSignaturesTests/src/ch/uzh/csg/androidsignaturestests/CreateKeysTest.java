@@ -6,8 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.spongycastle.jce.ECNamedCurveTable;
+import org.spongycastle.jce.spec.ECParameterSpec;
 
 import android.util.Log;
 
@@ -111,7 +111,7 @@ public class CreateKeysTest {
 		long start = System.currentTimeMillis();
 		
 		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(spec);
-        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA", "BC");
+        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA", "SC");
         g.initialize(ecSpec, new SecureRandom());
         g.generateKeyPair();
 		

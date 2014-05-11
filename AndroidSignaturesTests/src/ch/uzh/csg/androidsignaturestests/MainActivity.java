@@ -1,5 +1,9 @@
 package ch.uzh.csg.androidsignaturestests;
 
+import java.security.Security;
+
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends Activity {
+	
+	static {
+		Security.addProvider(new BouncyCastleProvider());
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
