@@ -19,8 +19,8 @@ import android.util.Log;
 
 public class ECCSignatures {
 	
-	private static final String TAG = "RSASignatures";
-	private static final String PLAIN_TEXT = "lorem ipsum blablabla";
+	private static final String TAG = "ECCSignatures";
+	private static final String PLAIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing metus.";
 	
 	private static PrivateKey privateKey160 = null;
 	private static PublicKey publicKey160 = null;
@@ -36,10 +36,10 @@ public class ECCSignatures {
 		privateKey224 = keyPair2.getPrivate();
 		publicKey224 = keyPair2.getPublic();
 		
-		Log.d(TAG, "----RSASignatures start----");
+		Log.d(TAG, "----ECCSignatures start----");
 		measureSHA1();
 		measureSHA256();
-		Log.d(TAG, "----RSASignatures end----");
+		Log.d(TAG, "----ECC Signatures end----");
 	}
 
 	private static void measureSHA1() {

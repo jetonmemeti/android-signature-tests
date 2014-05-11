@@ -15,7 +15,7 @@ import android.util.Log;
 public class RSASignatures {
 	
 	private static final String TAG = "RSASignatures";
-	private static final String PLAIN_TEXT = "lorem ipsum blablabla";
+	private static final String PLAIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing metus.";
 	
 	private static PrivateKey privateKey1024 = null;
 	private static PublicKey publicKey1024 = null;

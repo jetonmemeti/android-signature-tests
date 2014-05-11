@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
 		CreateKeysTest.doTests();
 		RSASignatures.doTests();
 		ECCSignatures.doTests();
+		SignatureLengths.doTests();
 	}
 
 	@Override
