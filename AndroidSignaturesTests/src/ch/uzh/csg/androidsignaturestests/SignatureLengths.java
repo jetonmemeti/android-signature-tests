@@ -20,68 +20,54 @@ public class SignatureLengths {
 	
 	private static final String PLAIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing metus.";
 	
+	private static int[] RSA_KEYSIZES = new int[] { 1024, 2048 };
+	
+	private static String[] ECC_ALGORITHM = new String[] { "brainpoolp160r1", "brainpoolp224r1", "brainpoolp256r1", "brainpoolp384r1", "brainpoolp384t1" };
+	
+	
 	public static void doTests() {
 		Log.d(TAG, "----Signature Length start----");
-		measureRSA();
-		measureECC();
+		measureRSAs();
+		measureECCs();
 		Log.d(TAG, "----Signature Length end----");
 	}
 	
-	private static void measureRSA() {
+	private static void measureRSAs() {
 		Log.d(TAG, "--RSA start--");
-		measureRSA1024();
-		measureRSA2048();
+		for (int keySize : RSA_KEYSIZES) {
+			measureRSA(keySize);
+		}
 		Log.d(TAG, "--RSA start--");
 	}
 
-	private static void measureECC() {
+	private static void measureECCs() {
 		Log.d(TAG, "--ECC start--");
-		measureECC160();
-		measureECC224();
-		measureECC384();
+		for (String s : ECC_ALGORITHM) {
+			measureECC(s);
+		}
 		Log.d(TAG, "--ECC start--");
-	}
-
-	private static void measureRSA1024() {
-		Log.d(TAG, "RSA 1024");
-		
-		StringBuilder builder = new StringBuilder();
-		
-		for (int i=0; i<10; i++) {
-			try {
-				if (i > 0)
-					builder.append(", ");
-				
-				builder.append(measureRSALength(1024));
-			} catch (Exception e) {
-				Log.e(TAG, "error", e);
-				break;
-			}
-		}
-		
-		Log.d(TAG, builder.toString());
-	}
-
-	private static void measureRSA2048() {
-		Log.d(TAG, "RSA 2048");
-		
-		StringBuilder builder = new StringBuilder();
-		
-		for (int i=0; i<10; i++) {
-			try {
-				if (i > 0)
-					builder.append(", ");
-				
-				builder.append(measureRSALength(2048));
-			} catch (Exception e) {
-				Log.e(TAG, "error", e);
-				break;
-			}
-		}
-		
-		Log.d(TAG, builder.toString());
 	}
 	
+	private static void measureRSA(int keySize) {
+		Log.d(TAG, "RSA "+keySize);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureRSALength(keySize));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+	}
+
 	private static int measureRSALength(int keySize) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		KeyPair keyPair = generateNewKey(keySize);
 		
@@ -106,8 +92,8 @@ public class SignatureLengths {
 		}
 	}
 
-	private static void measureECC160() {
-		Log.d(TAG, "ECC 160");
+	private static void measureECC(String spec) {
+		Log.d(TAG, "ECC "+spec);
 		
 		StringBuilder builder = new StringBuilder();
 		
@@ -116,7 +102,7 @@ public class SignatureLengths {
 				if (i > 0)
 					builder.append(", ");
 				
-				builder.append(measureECCLength("brainpoolp160r1"));
+				builder.append(measureECCLength(spec));
 			} catch (Exception e) {
 				Log.e(TAG, "error", e);
 				break;
@@ -125,47 +111,7 @@ public class SignatureLengths {
 		
 		Log.d(TAG, builder.toString());
 	}
-	
-	private static void measureECC224() {
-		Log.d(TAG, "ECC 224");
-		
-		StringBuilder builder = new StringBuilder();
-		
-		for (int i=0; i<20; i++) {
-			try {
-				if (i > 0)
-					builder.append(", ");
-				
-				builder.append(measureECCLength("brainpoolp224r1"));
-			} catch (Exception e) {
-				Log.e(TAG, "error", e);
-				break;
-			}
-		}
-		
-		Log.d(TAG, builder.toString());
-	}
-	
-	private static void measureECC384() {
-		Log.d(TAG, "ECC 384");
-		
-		StringBuilder builder = new StringBuilder();
-		
-		for (int i=0; i<20; i++) {
-			try {
-				if (i > 0)
-					builder.append(", ");
-				
-				builder.append(measureECCLength("brainpoolp384t1"));
-			} catch (Exception e) {
-				Log.e(TAG, "error", e);
-				break;
-			}
-		}
-		
-		Log.d(TAG, builder.toString());
-	}
-	
+
 	private static int measureECCLength(String spec) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		KeyPair keyPair = generateNewKey(spec);
 		
