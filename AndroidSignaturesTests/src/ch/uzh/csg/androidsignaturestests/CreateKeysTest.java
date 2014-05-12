@@ -51,7 +51,7 @@ public class CreateKeysTest {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(createRSAKeys(keySize));
 			} catch (NoSuchAlgorithmException e) {
@@ -82,7 +82,7 @@ public class CreateKeysTest {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(createECCKeys(spec));
 			} catch (Exception e) {

@@ -51,7 +51,7 @@ public class ECCSignatures {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(SHAwithECDSAsign(signatureAlgorithm, privateKey));
 			} catch (Exception e) {
@@ -84,7 +84,7 @@ public class ECCSignatures {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(SHAwithECDSAverify(signatureAlgorithm, privateKey, publicKey));
 			} catch (Exception e) {

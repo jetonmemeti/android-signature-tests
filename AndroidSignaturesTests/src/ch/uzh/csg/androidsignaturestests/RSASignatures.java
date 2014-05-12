@@ -47,7 +47,7 @@ public class RSASignatures {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(SHAwithRSAsign(signatureAlgorithm, privateKey));
 			} catch (Exception e) {
@@ -80,7 +80,7 @@ public class RSASignatures {
 		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
-					builder.append(", ");
+					builder.append("\t");
 				
 				builder.append(SHAwithRSAverify(signatureAlgorithm, privateKey, publicKey));
 			} catch (Exception e) {
