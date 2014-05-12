@@ -19,11 +19,10 @@ public class SignatureLengths {
 	private static final String TAG = "SignatureLengths";
 	
 	private static final String PLAIN_TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing metus.";
+	private static final int NOF_RUNS = 10;
 	
 	private static int[] RSA_KEYSIZES = new int[] { 1024, 2048 };
-	
-	private static String[] ECC_ALGORITHM = new String[] { "brainpoolp160r1", "brainpoolp224r1", "brainpoolp256r1", "brainpoolp384r1", "brainpoolp384t1" };
-	
+	private static String[] ECC_ALGORITHMS = new String[] { "brainpoolp160r1", "brainpoolp224r1", "brainpoolp256r1", "brainpoolp384r1", "brainpoolp384t1" };
 	
 	public static void doTests() {
 		Log.d(TAG, "----Signature Length start----");
@@ -42,7 +41,7 @@ public class SignatureLengths {
 
 	private static void measureECCs() {
 		Log.d(TAG, "--ECC start--");
-		for (String s : ECC_ALGORITHM) {
+		for (String s : ECC_ALGORITHMS) {
 			measureECC(s);
 		}
 		Log.d(TAG, "--ECC start--");
@@ -53,7 +52,7 @@ public class SignatureLengths {
 		
 		StringBuilder builder = new StringBuilder();
 		
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
 					builder.append(", ");
@@ -61,6 +60,7 @@ public class SignatureLengths {
 				builder.append(measureRSALength(keySize));
 			} catch (Exception e) {
 				Log.e(TAG, "error", e);
+				System.exit(0);
 				break;
 			}
 		}
@@ -97,7 +97,7 @@ public class SignatureLengths {
 		
 		StringBuilder builder = new StringBuilder();
 		
-		for (int i=0; i<20; i++) {
+		for (int i=0; i<NOF_RUNS; i++) {
 			try {
 				if (i > 0)
 					builder.append(", ");
@@ -105,6 +105,7 @@ public class SignatureLengths {
 				builder.append(measureECCLength(spec));
 			} catch (Exception e) {
 				Log.e(TAG, "error", e);
+				System.exit(0);
 				break;
 			}
 		}
