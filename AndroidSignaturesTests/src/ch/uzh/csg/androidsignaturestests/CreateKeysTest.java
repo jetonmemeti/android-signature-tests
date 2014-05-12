@@ -34,6 +34,7 @@ public class CreateKeysTest {
 		measureCreate160ECCKeys();
 		measureCreate224ECCKeys();
 		measureCreate384ECCKeys();
+		measureCreate384RECCKeys();
 		Log.d(TAG, "--ECC end--");
 	}
 
@@ -140,7 +141,6 @@ public class CreateKeysTest {
 		Log.d(TAG, "finished benchmark - ECC224");
 	}
 	
-	
 	private static void measureCreate384ECCKeys() {
 		Log.d(TAG, "start benchmark - ECC384");
 		
@@ -160,6 +160,28 @@ public class CreateKeysTest {
 		
 		Log.d(TAG, builder.toString());
 		Log.d(TAG, "finished benchmark - ECC384");
+	}
+	
+
+	private static void measureCreate384RECCKeys() {
+		Log.d(TAG, "start benchmark - ECC384R");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(createECCKeys("brainpoolp384r1"));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - ECC384R");
 	}
 	
 }
