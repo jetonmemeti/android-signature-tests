@@ -26,6 +26,8 @@ public class ECCSignatures {
 	private static PublicKey publicKey160 = null;
 	private static PrivateKey privateKey224 = null;
 	private static PublicKey publicKey224 = null;
+	private static PrivateKey privateKey384 = null;
+	private static PublicKey publicKey384 = null;
 	
 	public static final void doTests() {
 		KeyPair keyPair1 = generateNewKey("brainpoolp160r1");
@@ -35,6 +37,10 @@ public class ECCSignatures {
 		KeyPair keyPair2 = generateNewKey("brainpoolp224r1");
 		privateKey224 = keyPair2.getPrivate();
 		publicKey224 = keyPair2.getPublic();
+		
+		KeyPair keyPair3 = generateNewKey("brainpoolp384t1");
+		privateKey384 = keyPair3.getPrivate();
+		publicKey384 = keyPair3.getPublic();
 		
 		Log.d(TAG, "----ECCSignatures start----");
 		measureSHA1();
@@ -53,13 +59,15 @@ public class ECCSignatures {
 		Log.d(TAG, "-SHA1 sign start-");
 		measureSHA1withECDSA160sign();
 		measureSHA1withECDSA224sign();
+		measureSHA1withECDSA384sign();
 		Log.d(TAG, "-SHA1 sign end-");
 	}
-	
+
 	private static void measureSHA1verify() {
 		Log.d(TAG, "-SHA1 verify start-");
 		measureSHA1withECDSA160verify();
 		measureSHA1withECDSA224verify();
+		measureSHA1withECDSA384verify();
 		Log.d(TAG, "-SHA1 verify end-");
 	}
 
@@ -74,6 +82,7 @@ public class ECCSignatures {
 		Log.d(TAG, "-SHA256 sign start-");
 		measureSHA256withECDSA160sign();
 		measureSHA256withECDSA224sign();
+		measureSHA256withECDSA384sign();
 		Log.d(TAG, "-SHA256 sign end-");
 	}
 	
@@ -81,6 +90,7 @@ public class ECCSignatures {
 		Log.d(TAG, "-SHA256 verify start-");
 		measureSHA256withECDSA160verify();
 		measureSHA256withECDSA224verify();
+		measureSHA256withECDSA384verify();
 		Log.d(TAG, "-SHA256 verify end-");
 	}
 
@@ -125,6 +135,27 @@ public class ECCSignatures {
 		Log.d(TAG, builder.toString());
 		Log.d(TAG, "finished benchmark - SHA1withECDSA224 sign");
 	}
+	
+	private static void measureSHA1withECDSA384sign() {
+		Log.d(TAG, "start benchmark - SHA1withECDSA384 sign");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(SHA1withECDSAsign(privateKey384));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - SHA1withECDSA384 sign");
+	}
 
 	private static void measureSHA1withECDSA160verify() {
 		Log.d(TAG, "start benchmark - SHA1withECDSA160 verify");
@@ -167,11 +198,32 @@ public class ECCSignatures {
 		Log.d(TAG, builder.toString());
 		Log.d(TAG, "finished benchmark - SHA1withECDSA224 verify");
 	}
+
+	private static void measureSHA1withECDSA384verify() {
+		Log.d(TAG, "start benchmark - SHA1withECDSA384 verify");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(SHA1withECDSAverify(privateKey384, publicKey384));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - SHA1withECDSA384 verify");
+	}
 	
 	private static long SHA1withECDSAsign(PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
+		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         ecdsaSign.sign();
@@ -180,14 +232,14 @@ public class ECCSignatures {
 	}
 	
 	private static long SHA1withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
-		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
+		Signature ecdsaSign = Signature.getInstance("SHA1withECDSA");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         byte[] signature = ecdsaSign.sign();
 		
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign2 = Signature.getInstance("SHA1withECDSA", "SC");
+		Signature ecdsaSign2 = Signature.getInstance("SHA1withECDSA");
 		ecdsaSign2.initVerify(publicKey);
         ecdsaSign2.update(PLAIN_TEXT.getBytes("UTF-8"));
         boolean verify = ecdsaSign2.verify(signature);
@@ -242,6 +294,28 @@ public class ECCSignatures {
 		Log.d(TAG, "finished benchmark - SHA256withECDSA224 sign");
 	}
 	
+	private static void measureSHA256withECDSA384sign() {
+		Log.d(TAG, "start benchmark - SHA256withECDSA384 sign");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(SHA256withECDSAsign(privateKey384));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - SHA256withECDSA384 sign");
+	}
+
+	
 	private static void measureSHA256withECDSA160verify() {
 		Log.d(TAG, "start benchmark - SHA256withECDSA160 verify");
 		
@@ -284,10 +358,31 @@ public class ECCSignatures {
 		Log.d(TAG, "finished benchmark - SHA256withECDSA224 verify");
 	}
 	
+	private static void measureSHA256withECDSA384verify() {
+		Log.d(TAG, "start benchmark - SHA256withECDSA384 verify");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(SHA256withECDSAverify(privateKey384, publicKey384));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - SHA256withECDSA384 verify");
+	}
+	
 	private static long SHA256withECDSAsign(PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "SC");
+		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA");
 		ecdsaSign.initSign(privateKey);
 		ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
 		ecdsaSign.sign();
@@ -296,14 +391,14 @@ public class ECCSignatures {
 	}
 	
 	private static long SHA256withECDSAverify(PrivateKey privateKey, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
-		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "SC");
+		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA");
         ecdsaSign.initSign(privateKey);
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         byte[] signature = ecdsaSign.sign();
 		
 		long start = System.currentTimeMillis();
 		
-		Signature ecdsaSign2 = Signature.getInstance("SHA256withECDSA", "SC");
+		Signature ecdsaSign2 = Signature.getInstance("SHA256withECDSA");
 		ecdsaSign2.initVerify(publicKey);
         ecdsaSign2.update(PLAIN_TEXT.getBytes("UTF-8"));
         boolean verify = ecdsaSign2.verify(signature);

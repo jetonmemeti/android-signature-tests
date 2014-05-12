@@ -33,9 +33,10 @@ public class CreateKeysTest {
 		Log.d(TAG, "--ECC start--");
 		measureCreate160ECCKeys();
 		measureCreate224ECCKeys();
+		measureCreate384ECCKeys();
 		Log.d(TAG, "--ECC end--");
 	}
-	
+
 	private static void measureCreate1024Keys() {
 		Log.d(TAG, "start benchmark - RSA-1024");
 		
@@ -111,7 +112,7 @@ public class CreateKeysTest {
 		long start = System.currentTimeMillis();
 		
 		ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec(spec);
-        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA", "SC");
+        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA");
         g.initialize(ecSpec, new SecureRandom());
         g.generateKeyPair();
 		
@@ -137,6 +138,28 @@ public class CreateKeysTest {
 		
 		Log.d(TAG, builder.toString());
 		Log.d(TAG, "finished benchmark - ECC224");
+	}
+	
+	
+	private static void measureCreate384ECCKeys() {
+		Log.d(TAG, "start benchmark - ECC384");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(createECCKeys("brainpoolp384t1"));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+		Log.d(TAG, "finished benchmark - ECC384");
 	}
 	
 }

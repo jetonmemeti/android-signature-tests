@@ -1,10 +1,13 @@
 package ch.uzh.csg.androidsignaturestests;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.Signature;
+import java.security.SignatureException;
 
 import org.spongycastle.jce.ECNamedCurveTable;
 import org.spongycastle.jce.spec.ECParameterSpec;
@@ -35,43 +38,59 @@ public class SignatureLengths {
 		Log.d(TAG, "--ECC start--");
 		measureECC160();
 		measureECC224();
+		measureECC384();
 		Log.d(TAG, "--ECC start--");
 	}
 
 	private static void measureRSA1024() {
-		try {
-			Log.d(TAG, "RSA 1024");
-			
-			KeyPair keyPair = generateNewKey(1024);
-			
-			Signature rsa = Signature.getInstance("SHA256withRSA");
-			rsa.initSign(keyPair.getPrivate());
-			rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
-			byte[] signature = rsa.sign();
-			
-			Log.d(TAG, "length: "+signature.length);
-		} catch (Exception e) {
-			Log.e(TAG, "error", e);
-			System.exit(0);
+		Log.d(TAG, "RSA 1024");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureRSALength(1024));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
 		}
+		
+		Log.d(TAG, builder.toString());
 	}
 
 	private static void measureRSA2048() {
-		try {
-			Log.d(TAG, "RSA 2048");
-			
-			KeyPair keyPair = generateNewKey(2048);
-			
-			Signature rsa = Signature.getInstance("SHA256withRSA");
-			rsa.initSign(keyPair.getPrivate());
-			rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
-			byte[] signature = rsa.sign();
-			
-			Log.d(TAG, "length: "+signature.length);
-		} catch (Exception e) {
-			Log.e(TAG, "error", e);
-			System.exit(0);
+		Log.d(TAG, "RSA 2048");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<10; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureRSALength(2048));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
 		}
+		
+		Log.d(TAG, builder.toString());
+	}
+	
+	private static int measureRSALength(int keySize) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
+		KeyPair keyPair = generateNewKey(keySize);
+		
+		Signature rsa = Signature.getInstance("SHA256withRSA");
+		rsa.initSign(keyPair.getPrivate());
+		rsa.update(PLAIN_TEXT.getBytes("UTF-8"));
+		byte[] signature = rsa.sign();
+		
+		return signature.length;
 	}
 	
 	private static KeyPair generateNewKey(int keySize) {
@@ -88,39 +107,74 @@ public class SignatureLengths {
 	}
 
 	private static void measureECC160() {
-		try {
-			Log.d(TAG, "ECC 160");
-			
-			KeyPair keyPair = generateNewKey("brainpoolp160r1");
-			
-			Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
-	        ecdsaSign.initSign(keyPair.getPrivate());
-	        ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
-	        byte[] signature = ecdsaSign.sign();
-			
-	        Log.d(TAG, "length: "+signature.length);
-		} catch (Exception e) {
-			Log.e(TAG, "error", e);
-			System.exit(0);
+		Log.d(TAG, "ECC 160");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<20; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureECCLength("brainpoolp160r1"));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
 		}
+		
+		Log.d(TAG, builder.toString());
 	}
-
+	
 	private static void measureECC224() {
-		try {
-			Log.d(TAG, "ECC 224");
-			
-			KeyPair keyPair = generateNewKey("brainpoolp224r1");
-			
-			Signature ecdsaSign = Signature.getInstance("SHA1withECDSA", "SC");
-	        ecdsaSign.initSign(keyPair.getPrivate());
-	        ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
-	        byte[] signature = ecdsaSign.sign();
-			
-	        Log.d(TAG, "length: "+signature.length);
-		} catch (Exception e) {
-			Log.e(TAG, "error", e);
-			System.exit(0);
+		Log.d(TAG, "ECC 224");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<20; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureECCLength("brainpoolp224r1"));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
 		}
+		
+		Log.d(TAG, builder.toString());
+	}
+	
+	private static void measureECC384() {
+		Log.d(TAG, "ECC 384");
+		
+		StringBuilder builder = new StringBuilder();
+		
+		for (int i=0; i<20; i++) {
+			try {
+				if (i > 0)
+					builder.append(", ");
+				
+				builder.append(measureECCLength("brainpoolp384t1"));
+			} catch (Exception e) {
+				Log.e(TAG, "error", e);
+				break;
+			}
+		}
+		
+		Log.d(TAG, builder.toString());
+	}
+	
+	private static int measureECCLength(String spec) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
+		KeyPair keyPair = generateNewKey(spec);
+		
+		Signature ecdsaSign = Signature.getInstance("SHA256ithECDSA");
+        ecdsaSign.initSign(keyPair.getPrivate());
+        ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
+        byte[] signature = ecdsaSign.sign();
+        
+        return signature.length;
 	}
 	
 	private static KeyPair generateNewKey(String spec) {
