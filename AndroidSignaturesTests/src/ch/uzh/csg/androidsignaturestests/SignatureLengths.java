@@ -116,7 +116,7 @@ public class SignatureLengths {
 	private static int measureECCLength(String spec) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, UnsupportedEncodingException {
 		KeyPair keyPair = generateNewKey(spec);
 		
-		Signature ecdsaSign = Signature.getInstance("SHA256ithECDSA");
+		Signature ecdsaSign = Signature.getInstance("SHA256withECDSA");
         ecdsaSign.initSign(keyPair.getPrivate());
         ecdsaSign.update(PLAIN_TEXT.getBytes("UTF-8"));
         byte[] signature = ecdsaSign.sign();
